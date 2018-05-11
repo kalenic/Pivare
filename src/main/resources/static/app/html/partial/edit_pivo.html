@@ -1,0 +1,39 @@
+<div ng-controller="editPivoCtrl">
+	<h3>Edit pivo</h3>
+	<form>
+		<div class="form-group">
+            <label for="nazivSP">Naziv</label>
+            <input ng-model="pivo.naziv" type="text" class="form-control" id="nazivSP">
+        </div>
+		<div class="form-group">
+			<label for="vrstaPivaSP">Vrsta</label> <select
+				ng-options="v.id as v.naziv for v in vrstePiva"
+				ng-model="pivo.vrstaPivaId" class="form-control" id="vrstaPivaSP">
+				<option ng-repeat="v in vrstePiva" value="{{v.id}}">{{v.naziv}}</option>
+			</select>
+		</div>
+		<div class="form-group">
+            <label for="alkoholSP">Procenat alkohola</label>
+            <input  ng-model="pivo.alkohol" type="text" class="form-control" id="alkoholSP">
+        </div>
+        <div class="form-group">
+            <label for="IBUSP">IBU</label>
+            <input  ng-model="pivo.ibu"  type="text" class="form-control" id="IBUSP">
+        </div>
+        <div class="form-group">
+            <label for="kolicinaSP">Kolicina na stanju</label>
+            <input ng-model="pivo.kolicina" type="text" class="form-control" id="kolicinaSP">
+        </div>
+	
+		<div class="form-group">
+				<label for="pivaraSP">Pivara</label> <select 
+					ng-options="p.id as p.naziv for p in pivare"
+					ng-model="pivo.pivaraId" class="form-control" id="pivaraSP">
+					<option ng-repeat="p in pivare" value="{{p.id}}">{{p.naziv}}</option>
+				</select>
+		</div>
+	
+<!-- 		<input type="text" ng-model="knjiga.naziv"/> -->
+		<button ng-click="edit()">Izmeni</button>
+	</form>
+</div>

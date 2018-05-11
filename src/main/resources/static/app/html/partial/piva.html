@@ -1,0 +1,120 @@
+<div ng-controller="pivaCtrl">
+
+	<br /> <br />
+
+	<div class="page-header">
+		<h3>Piva</h3>
+	</div>
+	
+	<button class="btn btn-primary" ng-click="promeni = !promeni" type="button">{{nazivForme}}</button>
+	
+	<div ng-if=promeni class="row">
+		<form class = "col-lg-6 col-md-8 col-sm-10 col-xs-12">
+			<div class="form-group">
+				<label for="naziv">Naziv</label> <input class="form-control"
+					ng-model="novoPivo.naziv" type="text" id="naziv" />
+			</div>
+			<div class="form-group">
+				<label for="vrsta">Vrsta</label> <select class="form-control"
+					ng-options="v.id as v.naziv for v in vrstePiva"
+					ng-model="novoPivo.vrstaPivaId" id="vrstaPiva">
+					<option ng-repeat="vr in vrstePiva" value="{{vr.id}}">{{vr.naziv}}</option>
+				</select>
+			</div>
+			
+			<div class="form-group">
+				<label for="alkohol">Procenat alkohola</label> <input class="form-control"
+					ng-model="novoPivo.alkohol" type="text" id="alkohol" />
+			</div>
+			<div class="form-group">
+				<label for="ibu">IBU</label> <input class="form-control"
+					ng-model="novoPivo.ibu" type="text" id="ibu" />
+			</div>
+			<div class="form-group">
+				<label for="kolicina">Kolicina na stanju</label> <input class="form-control"
+					ng-model="novoPivo.kolicina" type="text" id="kolicina" />
+			</div>
+						
+			<div class="form-group">
+				<label for="pivara">Pivara</label> <select class="form-control"
+					ng-options="p.id as p.naziv for p in pivare"
+					ng-model="novoPivo.pivaraId" id="pivara">
+					<option ng-repeat="pi in pivare" value="{{pi.id}}">{{pi.naziv}}</option>
+				</select>
+			</div>
+			<button class="btn btn-primary" ng-click="savePivo()">Sacuvaj</button>
+			<button class="btn btn-primary" ng-click="odustani()" ng-show="izmena">Odustani</button>
+			<button class="btn btn-primary" ng-click="revert()" ng-show="izmena">Vrati izmene</button>
+		</form>
+	</div>
+	<br />
+	
+	<div ng-if=!promeni class="row">
+		<form class = "col-lg-6 col-md-8 col-sm-10 col-xs-12">
+			<div class="form-group">
+				<label for="nazivP">Naziv</label> 
+				<input class="form-control" ng-model="trazenoPivo.naziv" type="text" id="nazivP" />
+			</div>
+			<div class="form-group">
+				<label for="minIbu">Minimalni IBU</label> 
+				<input class="form-control" ng-model="trazenoPivo.minIbu" type="text" id="minIbu" />
+			</div>
+			<div class="form-group">
+				<label for="maxIbu">Maksimalni IBU</label> 
+				<input class="form-control" ng-model="trazenoPivo.maxIbu" type="text" id="maxIbu" />
+			</div>
+			<div class="form-group">
+				<label for="nazivPivare">Pivara</label> 
+				<input class="form-control" ng-model="trazenoPivo.nazivPivare" type="text" id="nazivPivare" />
+			</div>
+			
+			<button class="btn btn-primary" ng-click="filter()">Pretrazi</button>
+		</form>
+	</div>
+<!-- 	<button class="btn btn-primary" ng-click="veciOdSto()">Veci od 100</button> -->
+	<br />
+	
+	
+	
+	<div class="btn-group pull-right">
+		<button ng-click="changePage(-1)" ng-disabled="pageNum == 0" class="btn btn-default">
+				<span class="glyphicon glyphicon-menu-left"></span></button>
+		<button ng-click="changePage(1)" ng-disabled="pageNum == totalPages - 1" class="btn btn-default">
+				<span class="glyphicon glyphicon-menu-right"></span></button>
+	</div>
+	<div ng-show="gotPiva">
+	<table class="table table-striped table-bordered">
+		<thead>
+			<tr>
+				<th>Naziv</th>
+				<th>Vrsta</th>
+				<th>Procenat alkohola</th>
+				<th>Ibu</th>
+				<th>Kolicina na stanju</th>
+				<th>Pivara</th>
+				
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="p in piva | orderBy:'naziv':obrnut" ng-hide="p.excludedByFilter">
+<!-- 			<tr ng-repeat="p in piva | filter: nestalo"> -->
+				<td>{{p.naziv}}</td>
+				<td>{{p.vrstaPivaNaziv}}</td>
+				<td>{{p.alkohol}}</td>
+				<td>{{p.ibu}}</td>
+				<td>{{p.kolicina}}</td>
+				<td>{{p.pivaraNaziv}}</td>
+				<td>
+					<button ng-click="obrisi(p.id)" class="btn btn-danger">Obriši</button>
+					<button ng-click="izmeni(p.id)" class="btn btn-warning">Izmeni</button>
+					<button ng-click="izmeniIsta(p.id)" class="btn btn-warning">Izmeni na istoj strani</button>
+					<button ng-disabled="p.kolicina <= 0" ng-click="kupi(p.id)" class="btn btn-primary">Kupi</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	</div>
+<!-- 	<a class="btn btn-primary" ng-click="myCustomFilter()">Nestalo</a> -->
+	<button ng-click="obrnut = !obrnut" type="button">Obrni redosled</button>
+</div>
+
